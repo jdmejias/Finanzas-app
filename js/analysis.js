@@ -16,9 +16,51 @@ window.AnalysisPage = {
     const el = document.getElementById('analysis-page');
     if (!el) return;
 
+    this.renderSummaryCards(year, month);
     this.renderAlerts(year, month);
     this.renderInsights(year, month);
     this.renderCategoryDetails(year, month);
+  },
+
+  renderSummaryCards(year, month) {
+    const totals = calcMonthTotals(year, month);
+    
+    const incEl = document.getElementById('analysis-total-income');
+    const expEl = document.getElementById('analysis-total-expense');
+    const netEl = document.getElementById('analysis-net-balance');
+    const compEl = document.getElementById('analysis-comparison-bar');
+
+    if (incEl) incEl.textContent = formatCurrency(totals.income);
+    if (expEl) expEl.textContent = formatCurrency(totals.expense);
+    if (netEl) {
+      netEl.textContent = formatCurrency(totals.balance);
+      if (totals.balance < 0) {
+        netEl.style.color = '#DC2626'; // Rojo si es negativo
+      } else {
+        netEl.style.color = 'var(--primary)'; // Normal si es positivo
+      }
+    }
+
+    if (compEl) {
+      if (totals.income === 0 && totals.expense === 0) {
+        compEl.innerHTML = '<div class="text-sm text-muted">No hay movimientos este mes.</div>';
+      } else {
+        const total = totals.income + totals.expense;
+        const incPct = (totals.income / total) * 100;
+        const expPct = (totals.expense / total) * 100;
+        
+        compEl.innerHTML = `
+          <div style="display:flex;height:24px;border-radius:12px;overflow:hidden;background:var(--border-light)">
+            <div style="width:${incPct}%;background:#059669;transition:width 0.5s"></div>
+            <div style="width:${expPct}%;background:#DC2626;transition:width 0.5s"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:0.85rem;font-weight:bold">
+            <span style="color:#059669">Ingresos: ${Math.round(incPct)}%</span>
+            <span style="color:#DC2626">Gastos: ${Math.round(expPct)}%</span>
+          </div>
+        `;
+      }
+    }
   },
 
   renderAlerts(year, month) {
@@ -76,7 +118,14 @@ window.AnalysisPage = {
     if (!list || !tipContainer) return;
 
     const insights = generateInsights(year, month);
-    const tip = getFriendlyTip();
+    const tips = [
+      'Un pequeño ahorro diario hace una gran diferencia al final del mes. 💜',
+      'Si puedes, intenta aplicar la regla 50/30/20: 50% necesidades, 30% gustos, 20% ahorro.',
+      'Revisar tus gastos fijos recurrentemente te ayuda a encontrar suscripciones que ya no usas.',
+      'Antes de un gasto grande, espera 24 horas. ¡Evita las compras por impulso!',
+      'Un presupuesto no limita tu libertad, te da el control para gastar sin culpa. ✨'
+    ];
+    const tip = tips[Math.floor(Math.random() * tips.length)];
 
     if (insights.length === 0) {
       list.innerHTML = `<div class="insight-item text-muted">No hay suficientes datos este mes para mostrar insights.</div>`;

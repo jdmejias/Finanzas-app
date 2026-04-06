@@ -34,6 +34,7 @@ const PAGES = {
   savings:    { label: 'Ahorros',       icon: '🎯', file: 'pages/savings.html',    loader: () => window.SavingsPage?.init() },
   analysis:   { label: 'Análisis',      icon: '🧠', file: 'pages/analysis.html',   loader: () => window.AnalysisPage?.init() },
   reports:    { label: 'Reportes',      icon: '📄', file: 'pages/reports.html',    loader: () => window.ReportsPage?.init() },
+  fixed:      { label: 'Gastos Fijos',  icon: '📋', file: 'pages/fixed-expenses.html', loader: () => window.FixedPage?.init() },
   settings:   { label: 'Configuración', icon: '⚙️', file: 'pages/settings.html',   loader: () => window.SettingsPage?.init() }
 };
 
@@ -109,6 +110,7 @@ function renderSidebar() {
       ${buildNavItem('savings',    '🎯', 'Ahorros')}
       ${buildNavItem('analysis',   '🧠', 'Análisis')}
       ${buildNavItem('reports',    '📄', 'Reportes')}
+      ${buildNavItem('fixed',      '📋', 'Gastos Fijos')}
 
       <div class="nav-section-label" style="margin-top:8px">ajustes</div>
       ${buildNavItem('settings',   '⚙️', 'Configuración')}

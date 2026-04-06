@@ -209,6 +209,7 @@ const DB = {
       goals: JSON.parse(JSON.stringify(INITIAL_GOALS)),
       settings: { ...DEFAULT_SETTINGS },
       categories: JSON.parse(JSON.stringify(CATEGORIES)),
+      fixedExpenses: [],
       nextId: 200,
       initialized: true
     };
@@ -225,6 +226,7 @@ const DB = {
         if (!this._data.goals)      this._data.goals      = [];
         if (!this._data.categories) this._data.categories = JSON.parse(JSON.stringify(CATEGORIES));
         if (!this._data.budgets)    this._data.budgets    = { ...DEFAULT_BUDGETS };
+        if (!this._data.fixedExpenses) this._data.fixedExpenses = [];
       }
     } catch (e) {
       console.warn('DB load error, resetting:', e);
@@ -337,6 +339,64 @@ const DB = {
   // ── Settings ──
   getSetting(key)        { return this._data.settings[key]; },
   setSetting(key, value) { this._data.settings[key] = value; this.save(); },
+
+  // ── Fixed Expenses CRUD ──
+  addFixedExpense(fe) {
+    fe.id = this.nextId();
+    fe.active = true;
+    this._data.fixedExpenses.push(fe);
+    this.save();
+    return fe;
+  },
+
+  updateFixedExpense(id, changes) {
+    const idx = this._data.fixedExpenses.findIndex(fe => fe.id === id);
+    if (idx === -1) return null;
+    this._data.fixedExpenses[idx] = { ...this._data.fixedExpenses[idx], ...changes };
+    this.save();
+    return this._data.fixedExpenses[idx];
+  },
+
+  deleteFixedExpense(id) {
+    this._data.fixedExpenses = this._data.fixedExpenses.filter(fe => fe.id !== id);
+    this.save();
+  },
+
+  processFixedExpenses(year, month) {
+    const period = `${year}-${String(month + 1).padStart(2, '0')}`;
+    const fixeds = this._data.fixedExpenses.filter(fe => fe.active);
+    const results = { added: 0, skipped: 0 };
+
+    fixeds.forEach(fe => {
+      // Check if already exists in movements for this month
+      const exists = this._data.movements.some(m => 
+        m.fixedExpenseId === fe.id && 
+        m.date.startsWith(period)
+      );
+
+      if (!exists) {
+        // Use preferred day or default to day 1 safely within month limits
+        const day = fe.day ? Math.min(fe.day, new Date(year, month + 1, 0).getDate()) : 1;
+        const date = `${period}-${String(day).padStart(2, '0')}`;
+        
+        this.addMovement({
+          type: 'expense',
+          category: fe.category,
+          description: `(Fijo) ${fe.name}`,
+          amount: fe.amount,
+          date: date,
+          paymentMethod: 'Transferencia',
+          isFixed: true,
+          fixedExpenseId: fe.id
+        });
+        results.added++;
+      } else {
+        results.skipped++;
+      }
+    });
+
+    return results;
+  },
 
   // ── Reset ──
   reset() {

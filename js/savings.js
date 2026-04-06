@@ -87,7 +87,45 @@ window.SavingsPage = {
   renderGoalCard(g) {
     const pct = g.target > 0 ? Math.min(100, Math.round(g.saved / g.target * 100)) : 0;
     const left = Math.max(0, g.target - g.saved);
-    const daysLeft = g.deadline ? Math.ceil((new Date(g.deadline) - new Date()) / 86400000) : null;
+    
+    let daysLeft = null;
+    let monthsLeft = null;
+    let monthlyNeeded = 0;
+    let statusHtml = '';
+
+    if (g.deadline) {
+      const limit = new Date(g.deadline + 'T00:00:00');
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      
+      const diffTime = limit - today;
+      daysLeft = Math.ceil(diffTime / 86400000);
+      
+      if (daysLeft > 0) {
+        monthsLeft = Math.max(1, Math.ceil(daysLeft / 30));
+        monthlyNeeded = left / monthsLeft;
+      }
+    }
+
+    if (g.target > 0) {
+      if (left > 0) {
+        statusHtml = `
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light);font-size:.78rem;color:var(--muted);font-weight:600">
+            Faltan ${formatCurrency(left)} para la meta
+            ${monthlyNeeded > 0 ? `<br><span style="color:#059669">Debes ahorrar ${formatCurrency(monthlyNeeded)} por mes para llegar a tiempo (${monthsLeft} meses)</span>` : ''}
+          </div>`;
+      } else {
+        statusHtml = `
+          <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light);text-align:center">
+            <span style="font-size:.85rem;font-weight:800;color:#059669">🎉 ¡Meta cumplida!</span>
+          </div>`;
+      }
+    } else {
+      statusHtml = `
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light);text-align:center;font-size:.75rem;color:var(--muted)">
+          Haz clic en ✏️ para definir un monto
+        </div>`;
+    }
 
     return `
       <div class="goal-card">
@@ -125,16 +163,7 @@ window.SavingsPage = {
           </div>
         </div>
 
-        ${g.target > 0 ? (left > 0 ? `
-        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light);font-size:.78rem;color:var(--muted);font-weight:600">
-          Faltan ${formatCurrency(left)} para la meta
-        </div>` : `
-        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light);text-align:center">
-          <span style="font-size:.85rem;font-weight:800;color:#059669">🎉 ¡Meta cumplida!</span>
-        </div>`) : `
-        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border-light);text-align:center;font-size:.75rem;color:var(--muted)">
-          Haz clic en ✏️ para definir un monto
-        </div>`}
+        ${statusHtml}
 
         <button class="btn btn-primary btn-sm" style="width:100%;margin-top:12px" onclick="SavingsPage.openContrib(${g.id})">
           💰 Agregar aporte

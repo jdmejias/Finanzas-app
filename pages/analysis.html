@@ -9,6 +9,33 @@
     </div>
   </div>
 
+  <!-- Summary Cards -->
+  <div class="grid grid-3 mb-6" id="analysis-summary-container">
+    <div class="card" style="padding:20px; text-align:center">
+      <span style="font-size:2rem">💰</span>
+      <div id="analysis-total-income" style="font-size:1.5rem; font-weight:800; color:#059669; margin-top:8px">$0</div>
+      <div class="text-xs text-muted font-bold mt-1 uppercase">Total Ingresos</div>
+    </div>
+    <div class="card" style="padding:20px; text-align:center">
+      <span style="font-size:2rem">💸</span>
+      <div id="analysis-total-expense" style="font-size:1.5rem; font-weight:800; color:#DC2626; margin-top:8px">$0</div>
+      <div class="text-xs text-muted font-bold mt-1 uppercase">Total Gastos</div>
+    </div>
+    <div class="card" style="padding:20px; text-align:center">
+      <span style="font-size:2rem">⚖️</span>
+      <div id="analysis-net-balance" style="font-size:1.5rem; font-weight:800; color:var(--primary); margin-top:8px">$0</div>
+      <div class="text-xs text-muted font-bold mt-1 uppercase">Balance Neto</div>
+    </div>
+  </div>
+
+  <!-- Income vs Expenses Bar -->
+  <div class="card mb-6" style="padding:20px">
+    <h3 style="font-size:1rem; margin-bottom:12px">Comparativa visual</h3>
+    <div id="analysis-comparison-bar">
+      <div class="spinner"></div>
+    </div>
+  </div>
+
   <div class="grid grid-2">
     <!-- Left Column: Critical Alerts -->
     <div>

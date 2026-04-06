@@ -1,0 +1,69 @@
+<div id="fixed-expenses-page" class="page-wrapper">
+  <div class="page-header">
+    <div class="page-header-info">
+      <h1>📋 Gastos Fijos Mensuales</h1>
+      <p>Configura tus gastos recurrentes para automatizar tu registro cada mes.</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-primary" onclick="FixedPage.openAdd()">➕ Nuevo gasto fijo</button>
+    </div>
+  </div>
+
+  <div class="card mb-6">
+    <div class="card-body flex justify-between items-center bg-primary-light" style="border-left: 4px solid var(--primary); border-radius: 8px;">
+      <div>
+        <h4 class="mb-1">🚀 Automatización</h4>
+        <p class="text-sm text-muted">Ahorra tiempo agregando todos tus gastos fijos del mes activo con un solo clic.</p>
+      </div>
+      <button class="btn btn-primary" onclick="FixedPage.process()">
+        ✨ Agregar gastos fijos de este mes
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div id="fixed-list-container">
+      <!-- List will be rendered here -->
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay hidden" id="fixed-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="fixed-modal-title">📋 Nuevo Gasto Fijo</h3>
+        <button class="modal-close" onclick="closeModal('fixed-modal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Nombre del gasto <span>*</span></label>
+          <input class="form-control" id="fixed-name" type="text" placeholder="Ej: Gimnasio, Netflix, Seguro...">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Monto <span>*</span></label>
+            <input class="form-control" id="fixed-amount" type="number" placeholder="0">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Día del mes (opcional)</label>
+            <input class="form-control" id="fixed-day" type="number" min="1" max="31" placeholder="Ej: 5">
+            <div class="form-hint">Día sugerido para el registro</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Categoría <span>*</span></label>
+          <select class="form-control" id="fixed-category">
+            <!-- Categories will be loaded here -->
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('fixed-modal')">Cancelar</button>
+        <button class="btn btn-primary" onclick="FixedPage.save()">💾 Guardar Gasto Fijo</button>
+      </div>
+    </div>
+  </div>
+</div>
