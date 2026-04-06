@@ -1,0 +1,101 @@
+<!-- Dashboard Page — cargada por el router SPA -->
+<div class="page-wrapper" id="dashboard-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="page-header-info">
+      <h1 id="dash-title">🏠 Mi Dashboard</h1>
+      <p id="dash-subtitle">Resumen de tus finanzas — cargando...</p>
+    </div>
+    <div class="page-header-actions">
+      <button class="btn btn-income" onclick="MovementsPage.openAdd?.('income') || openModal('movement-modal')">
+        💵 Agregar ingreso
+      </button>
+      <button class="btn btn-expense" onclick="navigateTo('movements')">
+        💳 Agregar gasto
+      </button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="grid grid-4 mb-6" id="kpi-grid">
+    <!-- Filled by dashboard.js -->
+    <div class="kpi-card"><div class="spinner"></div></div>
+    <div class="kpi-card"><div class="spinner"></div></div>
+    <div class="kpi-card"><div class="spinner"></div></div>
+    <div class="kpi-card"><div class="spinner"></div></div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="charts-grid mb-6">
+
+    <!-- Pie: Categorías -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">🍰 Gastos por categoría</div>
+          <div class="chart-card-subtitle">Distribución de este mes</div>
+        </div>
+      </div>
+      <div class="chart-container chart-container-md">
+        <canvas id="chart-category-pie"></canvas>
+      </div>
+      <div class="pie-legend" id="pie-legend"></div>
+    </div>
+
+    <!-- Bar: Ingresos vs Gastos -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">📊 Ingresos vs Gastos</div>
+          <div class="chart-card-subtitle">Últimos 6 meses</div>
+        </div>
+      </div>
+      <div class="chart-container chart-container-md">
+        <canvas id="chart-monthly-bar"></canvas>
+      </div>
+    </div>
+
+    <!-- Line: Ahorro -->
+    <div class="chart-card full-width">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-card-title">📈 Evolución del ahorro</div>
+          <div class="chart-card-subtitle">Mes a mes</div>
+        </div>
+      </div>
+      <div class="chart-container chart-container-md">
+        <canvas id="chart-savings-line"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Recent movements -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">🕐 Últimos movimientos</div>
+      <button class="btn btn-ghost btn-sm" onclick="navigateTo('movements')">Ver todos →</button>
+    </div>
+    <div id="recent-movements">
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Update header text
+  (function() {
+    const s = AppState;
+    const mn = getMonthName(s.selectedMonth);
+    const yr = s.selectedYear;
+    const titleEl    = document.getElementById('dash-title');
+    const subtitleEl = document.getElementById('dash-subtitle');
+    const name = DB.getSetting('userName') || 'María';
+    const hours = new Date().getHours();
+    const greet = hours < 12 ? '¡Buenos días' : hours < 19 ? '¡Buenas tardes' : '¡Buenas noches';
+    if (titleEl)    titleEl.textContent    = `${greet}, ${name}! 💜`;
+    if (subtitleEl) subtitleEl.textContent = `Resumen de tus finanzas — ${mn} ${yr}`;
+  })();
+</script>

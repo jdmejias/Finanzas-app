@@ -1,0 +1,13 @@
+node_modules/
+.DS_Store
+.env
+.gemini/
+*.log
+dist/
+build/
+.vscode/
+.idea/
+tmp/
+*.zip
+*.rar
+*.7z

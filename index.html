@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finanza Personal 💜 — Controla tu dinero fácil</title>
+  <meta name="description" content="App de finanzas personales para llevar el control de ingresos, gastos y ahorros de forma fácil, visual y sin complicaciones.">
+  <meta name="theme-color" content="#C084FC">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/charts.css">
+  <link rel="stylesheet" href="css/print.css">
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    /* Welcome splash screen */
+    #splash {
+      position:fixed; inset:0;
+      background:linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 50%, #FDF2F8 100%);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      z-index:9999; transition:opacity .5s ease, transform .5s ease;
+    }
+    #splash.fade-out { opacity:0; pointer-events:none; transform:scale(1.02); }
+    .splash-logo { font-size:4rem; margin-bottom:16px; animation:pulse 1.5s ease infinite; }
+    .splash-title { font-size:2rem; font-weight:800; color:#1E1B4B; margin-bottom:6px; font-family:'Nunito',sans-serif; }
+    .splash-sub   { font-size:1rem; color:#7C6F8E; font-family:'Nunito',sans-serif; font-weight:600; }
+    .splash-bar   { width:200px; height:4px; background:#E9D5FF; border-radius:99px; margin-top:32px; overflow:hidden; }
+    .splash-fill  { height:100%; border-radius:99px; background:linear-gradient(90deg,#C084FC,#F9A8D4); animation:load 1.2s ease forwards; }
+    @keyframes load   { from{width:0} to{width:100%} }
+    @keyframes pulse  { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+  </style>
+</head>
+<body>
+
+  <!-- Splash screen -->
+  <div id="splash">
+    <div class="splash-logo">💜</div>
+    <div class="splash-title">Finanza Personal</div>
+    <div class="splash-sub">Cargando tu dinero...</div>
+    <div class="splash-bar"><div class="splash-fill"></div></div>
+  </div>
+
+  <!-- Layout wrapper -->
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Main -->
+    <main class="main-content">
+
+      <!-- Mobile top bar -->
+      <header class="topbar" id="topbar"></header>
+
+      <!-- Page content (SPA router renders here) -->
+      <div id="page-content">
+        <div class="page-wrapper">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toast-container"></div>
+
+  <!-- JS (order matters) -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/movements.js"></script>
+  <script src="js/budget.js"></script>
+  <script src="js/savings.js"></script>
+  <script src="js/analysis.js"></script>
+  <script src="js/reports.js"></script>
+  <script src="js/settings.js"></script>
+
+  <script>
+    // Hide splash after load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const splash = document.getElementById('splash');
+        if (splash) {
+          splash.classList.add('fade-out');
+          setTimeout(() => splash.remove(), 550);
+        }
+      }, 1300);
+    });
+  </script>
+</body>
+</html>

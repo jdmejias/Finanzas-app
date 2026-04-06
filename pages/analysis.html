@@ -1,0 +1,67 @@
+<!-- Analysis Page — cargada por el router SPA -->
+<div class="page-wrapper" id="analysis-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="page-header-info">
+      <h1>🧠 Análisis Financiero</h1>
+      <p id="analysis-month-label">Entiende mejor cómo usas tu dinero</p>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <!-- Left Column: Critical Alerts -->
+    <div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+        <span style="font-size:1.2rem">🚨</span>
+        <h3 style="font-size:1.1rem">Alertas de Atención</h3>
+      </div>
+      <div id="analysis-alerts-container">
+        <!-- Filled by analysis.js -->
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <!-- Right Column: Insights & Tips -->
+    <div class="flex flex-col gap-4">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:1.2rem">✨</span>
+        <h3 style="font-size:1.1rem">Resumen e Insights</h3>
+      </div>
+      
+      <div class="card" style="padding:20px; border-left: 5px solid var(--primary)">
+        <div id="analysis-insights-list" class="flex flex-col gap-3">
+          <!-- Filled by analysis.js -->
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <!-- Friendly Tip Box -->
+      <div id="analysis-tip-container">
+        <!-- Filled by analysis.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Category Analysis -->
+  <div class="card mt-6">
+    <div class="card-header">
+      <div class="card-title">🛒 Análisis por Categoría</div>
+    </div>
+    <div id="analysis-category-details">
+      <!-- Filled by analysis.js -->
+      <div class="spinner"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    const s = AppState;
+    const mn = getMonthName(s.selectedMonth);
+    const yr = s.selectedYear;
+    const label = document.getElementById('analysis-month-label');
+    if (label) label.textContent = `Análisis de inteligencia para ${mn} ${yr}`;
+  })();
+</script>

@@ -1,0 +1,9 @@
+{
+  "name": "finanza-personal",
+  "version": "1.0.0",
+  "description": "App de finanzas personales",
+  "scripts": {
+    "start": "npx -y serve . -p 3000 --no-clipboard",
+    "dev": "npx -y serve . -p 3000"
+  }
+}

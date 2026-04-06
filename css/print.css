@@ -1,0 +1,19 @@
+/* ============================================================
+   FINANZA PERSONAL — print.css
+   Estilos para impresión / exportar PDF
+   ============================================================ */
+@media print {
+  .sidebar, .topbar, .hamburger-btn, .sidebar-overlay,
+  .btn, .filters-bar, .page-header-actions,
+  #toast-container, .modal-overlay { display: none !important; }
+
+  .main-content { margin-left: 0 !important; padding-top: 0 !important; }
+  .page-wrapper { padding: 0 !important; }
+
+  body { background: white !important; color: black !important; }
+  .card, .kpi-card, .chart-card, .goal-card { box-shadow: none !important; border: 1px solid #ddd !important; }
+
+  .chart-container-lg, .chart-container-md { height: 220px; }
+
+  @page { margin: 1.5cm; }
+}
